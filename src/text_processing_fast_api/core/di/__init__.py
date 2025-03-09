@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from text_processing_fast_api.repositories.user_request import UserRequestRepository
+from text_processing_fast_api.services.text_processing import TextProcessingService
 from text_processing_fast_api.settings import get_settings
 from sqlalchemy.orm import sessionmaker
 
@@ -13,5 +14,12 @@ user_request_repository = UserRequestRepository(
     SessionLocal()
 )
 
+text_request_service = TextProcessingService(
+    user_request_repository=user_request_repository
+)
+
 async def get_user_request_repository():
     return user_request_repository
+
+async def get_text_processing_service():
+    return text_request_service

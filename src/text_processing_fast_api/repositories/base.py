@@ -17,7 +17,6 @@ class BaseRepository(Generic[T]):
 
     def add(self, entity: T):
         self.db.add(entity)
-        print(entity.__dict__)
         self.db.commit()
         self.db.refresh(entity)
         return entity
