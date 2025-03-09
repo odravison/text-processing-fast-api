@@ -30,7 +30,6 @@ async def create_new_text(
         )
         background_task.add_task(text_processing_service.process_text, user_request)
     except Exception as e:
-        return JSONResponse(content=e, status_code=400)
-
+        return JSONResponse(content=str(e), status_code=400)
 
     return JSONResponse(user_request.to_dict())

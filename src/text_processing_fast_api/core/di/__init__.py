@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from text_processing_fast_api.repositories.user_request import UserRequestRepository
 from text_processing_fast_api.services.text_processing import TextProcessingService
@@ -10,8 +11,21 @@ db_engine = create_engine(settings.db_dsn)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
 
+@contextmanager
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+        db.commit()  # Try to commit the changes
+    except Exception as e:
+        db.rollback()  # Revert the changes in an exception
+        print(f"Erro: {e}")
+        raise
+    finally:
+        db.close()  # Close the connection
+
 user_request_repository = UserRequestRepository(
-    SessionLocal()
+    get_db
 )
 
 text_request_service = TextProcessingService(
