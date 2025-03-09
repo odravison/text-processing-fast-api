@@ -1,0 +1,52 @@
+services:
+
+  db:
+    image: postgres:14.5
+    container_name: text-processing-db
+    restart: always
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data/"
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: text_processing
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: text-processing-app:dev
+    container_name: "text-processing-app"
+    command: >
+      bash -c "uvicorn --factory main:start_fast_api --host 0.0.0.0  --port 8000 --reload"
+    volumes:
+      - ./config:/opt/text-processing-fast-api/config
+      - ./docs:/opt/text-processing-fast-api/docs
+      - ./libs:/opt/text-processing-fast-api/libs
+      - ./scripts:/opt/text-processing-fast-api/scripts
+      - ./src:/opt/text-processing-fast-api/src
+      - ./tests:/opt/text-processing-fast-api/tests
+      - ./pyproject.toml:/opt/text-processing-fast-api/pyproject.toml
+      - ./poetry.lock:/opt/text-processing-fast-api/poetry.lock
+    working_dir: /opt/text-processing-fast-api
+    env_file:
+      - .env.local
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+
+networks:
+  default:
+    name: text-processing-fast-api
+
+volumes:
+  postgres_data:
+    driver: local
