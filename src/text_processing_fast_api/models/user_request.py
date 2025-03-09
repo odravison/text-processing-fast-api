@@ -11,9 +11,7 @@ class UserRequest(Base):
     text: Mapped[str] = mapped_column(String, nullable=False)
     processed_text: Mapped[str] = mapped_column(String, nullable=True)
 
-    def __init__(self, text: str, processed_text: str = None):
+    def __init__(self, text: str, id: int = None, processed_text: str = None):
         self.text = text
+        self.id = id
         self.processed_text = processed_text
-
-    def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

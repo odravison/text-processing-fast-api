@@ -16,7 +16,7 @@ down:
 restart: down up
 
 logs:
-	docker-compose logs -f
+	docker logs -f text-processing-app
 
 .PHONY: clean
 clean:
