@@ -1,8 +1,6 @@
 from collections.abc import Callable
 from typing import Generic, TypeVar
 
-from sqlalchemy import update
-
 from text_processing_fast_api.models.base import Base
 
 T = TypeVar("T", bound=Base)
@@ -32,7 +30,7 @@ class BaseRepository(Generic[T]):
     def add(self, entity: T) -> T:
         with self.get_session() as session:
             if entity.id:
-                session.execute(update(self.model), [entity.to_dict()])
+                session.merge(entity)
                 session.commit()
             else:
                 session.add(entity)

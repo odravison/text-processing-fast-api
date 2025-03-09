@@ -34,7 +34,6 @@ async def create_new_text(
                 **body.model_dump(),
             )
         )
-        # user_request = UserRequestSchemaResponse.model_validate(user_request.to_dict())
         background_task.add_task(text_processing_service.process_text, user_request)
         return UserRequestSchemaResponse.model_validate(user_request.to_dict()).model_dump_json()
     except Exception as e:
