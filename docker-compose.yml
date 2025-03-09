@@ -24,10 +24,6 @@ services:
     command: >
       bash -c "uvicorn --factory main:start_fast_api --host 0.0.0.0  --port 8000 --reload"
     volumes:
-      - ./config:/opt/text-processing-fast-api/config
-      - ./docs:/opt/text-processing-fast-api/docs
-      - ./libs:/opt/text-processing-fast-api/libs
-      - ./scripts:/opt/text-processing-fast-api/scripts
       - ./src:/opt/text-processing-fast-api/src
       - ./tests:/opt/text-processing-fast-api/tests
       - ./pyproject.toml:/opt/text-processing-fast-api/pyproject.toml
