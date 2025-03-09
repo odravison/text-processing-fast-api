@@ -35,5 +35,4 @@ async def create_new_text(
         background_task.add_task(text_processing_service.process_text, user_request)
         return  UserRequestSchemaResponse.model_validate(user_request.to_dict()).model_dump_json()
     except Exception as e:
-        print(type(e))
         return JSONResponse(status_code=400, content=dict(message=str(e)))

@@ -22,7 +22,7 @@ class TextProcessingService:
         user_request_entity: UserRequest = self.user_request_repository.get(user_request.id)
         user_request_entity.processed_text = processed_text
         self.user_request_repository.add(user_request_entity)
-        print("Text saved!")
+        print("Text saved!", flush=True)
 
     def _random_sentence(self, word_count=5):
         return " ".join(random.choices(words, k=word_count)) + "."
