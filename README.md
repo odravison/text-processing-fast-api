@@ -112,3 +112,4 @@ curl -X POST "http://localhost:8000/v1/text/" -H "Content-Type: application/json
 1.  [Add Unit of Work Pattern](https://docs.sqlalchemy.org/en/20/tutorial/orm_data_manipulation.html#tutorial-inserting-orm) to support atomic endpoint calls
 2. Add logs among the code
 3. Add obeservability support
+4. Unit and integration tests
