@@ -1,7 +1,9 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from sqlalchemy import URL
 import urllib.parse
 from functools import lru_cache
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy import URL
+
 
 class Settings(BaseSettings):
     """
@@ -42,6 +44,7 @@ class Settings(BaseSettings):
     @property
     def db_dsn_for_alembic(self) -> str:
         return f"postgresql+psycopg2://{self.POSTGRES_USERNAME}:{self._db_password_escaped_for_alembic}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+
 
 @lru_cache
 def get_settings() -> Settings:

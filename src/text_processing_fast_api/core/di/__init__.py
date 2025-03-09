@@ -1,15 +1,18 @@
 from contextlib import contextmanager
+
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 from text_processing_fast_api.repositories.user_request import UserRequestRepository
 from text_processing_fast_api.services.text_processing import TextProcessingService
 from text_processing_fast_api.settings import get_settings
-from sqlalchemy.orm import sessionmaker
 
 settings = get_settings()
 
 db_engine = create_engine(settings.db_dsn)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
+
 
 @contextmanager
 def get_db():
@@ -24,16 +27,15 @@ def get_db():
     finally:
         db.close()  # Close the connection
 
-user_request_repository = UserRequestRepository(
-    get_db
-)
 
-text_request_service = TextProcessingService(
-    user_request_repository=user_request_repository
-)
+user_request_repository = UserRequestRepository(get_db)
+
+text_request_service = TextProcessingService(user_request_repository=user_request_repository)
+
 
 async def get_user_request_repository():
     return user_request_repository
+
 
 async def get_text_processing_service():
     return text_request_service

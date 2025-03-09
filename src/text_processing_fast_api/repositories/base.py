@@ -1,11 +1,13 @@
-from sqlalchemy.orm import Session
-from typing import Callable, Generic, TypeVar, Type
+from collections.abc import Callable
+from typing import Generic, TypeVar
+
 from text_processing_fast_api.models.base import Base
 
 T = TypeVar("T", bound=Base)
 
+
 class BaseRepository(Generic[T]):
-    def __init__(self, get_session: Callable, model: Type[T]):
+    def __init__(self, get_session: Callable, model: type[T]):
         self.get_session = get_session
         self.model = model
 

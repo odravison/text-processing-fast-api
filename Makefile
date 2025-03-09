@@ -4,22 +4,17 @@ IMAGE_NAME = $(PROJECT_NAME):dev
 
 .PHONY: build up down restart logs
 
-# Builda a imagem Docker
 build:
 	docker build -t $(IMAGE_NAME) .
 
-# Sobe os containers do Docker Compose (app + banco de dados)
 up: build
 	docker-compose up -d
 
-# Para e remove os containers
 down:
 	docker-compose down
 
-# Reinicia os containers
 restart: down up
 
-# Exibe os logs
 logs:
 	docker-compose logs -f
 
@@ -36,6 +31,15 @@ check-lint: ## Check lint
 	@echo "Running ruff formatter"
 	$(MAKE) --no-print-directory run-command-in-container \
 	COMMAND="poetry run ruff format --check src/ tests/"
+
+.PHONY: apply-lint
+apply-lint: ## Apply lint
+	@echo "Apply ruff lint"
+	$(MAKE) --no-print-directory run-command-in-container \
+	COMMAND="poetry run ruff check --fix src/ tests/"
+	@echo "Apply ruff formatter"
+	$(MAKE) --no-print-directory run-command-in-container \
+	COMMAND="poetry run ruff format src/ tests/"
 
 run-command-in-container:
 	@docker run \

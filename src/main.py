@@ -1,7 +1,7 @@
 from fastapi import FastAPI
+
 from text_processing_fast_api.api.v1 import router as v1_router
 from text_processing_fast_api.core.di import db_engine
-
 
 
 def start_fast_api():
@@ -15,9 +15,9 @@ def start_fast_api():
 
     api.include_router(v1_router)
 
-
     ## Load models in database
     from text_processing_fast_api.models import load_database_tables
+
     load_database_tables(db_engine=db_engine)
 
     return api
