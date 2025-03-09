@@ -16,8 +16,7 @@ class TextProcessingService:
 
     async def process_text(self, user_request: UserRequestSchemaResponse):
         print(f"Text received: {user_request.text}", flush=True)
-        # await asyncio.sleep(random.randint(5, 10))
-        await asyncio.sleep(2)
+        await asyncio.sleep(random.randint(5, 10))
         processed_text: str = self._random_sentence(230)
         print("Text processed!", flush=True)
         user_request_entity: UserRequest = self.user_request_repository.get(user_request.id)
