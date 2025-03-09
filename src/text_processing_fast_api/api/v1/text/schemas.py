@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class UserRequestSchemaResponse(BaseModel):
     id: int
     text: str
@@ -8,7 +9,6 @@ class UserRequestSchemaResponse(BaseModel):
     class Config:
         from_attributes = True
 
-from pydantic import BaseModel
 
 class UserRequestSchema(BaseModel):
     text: str

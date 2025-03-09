@@ -3,7 +3,10 @@ from typing import Annotated
 from fastapi import APIRouter, BackgroundTasks, Depends
 from fastapi.responses import JSONResponse
 
-from text_processing_fast_api.api.v1.text.schemas import UserRequestSchema, UserRequestSchemaResponse
+from text_processing_fast_api.api.v1.text.schemas import (
+    UserRequestSchema,
+    UserRequestSchemaResponse,
+)
 from text_processing_fast_api.core.di import (
     get_text_processing_service,
     get_user_request_repository,
@@ -33,6 +36,6 @@ async def create_new_text(
         )
         # user_request = UserRequestSchemaResponse.model_validate(user_request.to_dict())
         background_task.add_task(text_processing_service.process_text, user_request)
-        return  UserRequestSchemaResponse.model_validate(user_request.to_dict()).model_dump_json()
+        return UserRequestSchemaResponse.model_validate(user_request.to_dict()).model_dump_json()
     except Exception as e:
-        return JSONResponse(status_code=400, content=dict(message=str(e)))
+        return JSONResponse(status_code=400, content={"message": str(e)})
